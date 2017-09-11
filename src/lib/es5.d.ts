@@ -1126,9 +1126,11 @@ interface Array<T> {
     slice(start?: number, end?: number): T[];
     /**
       * Sorts an array.
-      * @param compareFn The name of the function used to determine the order of the elements. If omitted, the elements are sorted in ascending, ASCII character order.
+      * @param compareFn The function used to determine the order of the elements. Required when sorting a non-string array.
+      *                  Pass `(a, b) => "" + a < "" + b ? -1 : "" + a > "" + b ? 1 : 0` for the spec behavior.
       */
-    sort(compareFn?: (a: T, b: T) => number): this;
+    sort(this: string[], compareFn?: (a: string, b: string) => number): this;
+    sort(compareFn: (a: T, b: T) => number): this;
     /**
       * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
       * @param start The zero-based location in the array from which to start removing elements.

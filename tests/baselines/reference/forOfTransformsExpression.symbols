@@ -8,9 +8,9 @@ let items = [{ name: "A" }, { name: "C" }, { name: "B" }];
 
 for (var item of items.sort((a, b) => a.name.localeCompare(b.name))) {
 >item : Symbol(item, Decl(forOfTransformsExpression.ts, 2, 8))
->items.sort : Symbol(Array.sort, Decl(lib.d.ts, --, --))
+>items.sort : Symbol(Array.sort, Decl(lib.d.ts, --, --), Decl(lib.d.ts, --, --))
 >items : Symbol(items, Decl(forOfTransformsExpression.ts, 1, 3))
->sort : Symbol(Array.sort, Decl(lib.d.ts, --, --))
+>sort : Symbol(Array.sort, Decl(lib.d.ts, --, --), Decl(lib.d.ts, --, --))
 >a : Symbol(a, Decl(forOfTransformsExpression.ts, 2, 29))
 >b : Symbol(b, Decl(forOfTransformsExpression.ts, 2, 31))
 >a.name.localeCompare : Symbol(String.localeCompare, Decl(lib.d.ts, --, --), Decl(lib.d.ts, --, --))
