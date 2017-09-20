@@ -4,7 +4,7 @@ tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(25,25): e
 tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(32,25): error TS4037: Parameter type of public setter 'foo4' from exported class has or is using private name 'private1'.
 tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(36,21): error TS4043: Return type of public getter 'foo5' from exported class has or is using private name 'private1'.
 tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(71,23): error TS4043: Return type of public getter 'foo111' from exported class has or is using private name 'm2'.
-tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(76,13): error TS4042: Return type of public getter 'foo112' from exported class has or is using name 'm2.public2' from private module 'm2'.
+tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(76,13): error TS4042: Return type of public getter 'foo112' from exported class has or is using name 'm2.public2' from private namespace 'm2'.
 tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(81,27): error TS4037: Parameter type of public setter 'foo113' from exported class has or is using private name 'm2'.
 tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(88,27): error TS4037: Parameter type of public setter 'foo114' from exported class has or is using private name 'm2'.
 tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(92,23): error TS4043: Return type of public getter 'foo115' from exported class has or is using private name 'm2'.
@@ -100,7 +100,7 @@ tests/cases/compiler/declFileTypeAnnotationVisibilityErrorAccessors.ts(92,23): e
             // getter without annotation
             get foo112() {
                 ~~~~~~
-!!! error TS4042: Return type of public getter 'foo112' from exported class has or is using name 'm2.public2' from private module 'm2'.
+!!! error TS4042: Return type of public getter 'foo112' from exported class has or is using name 'm2.public2' from private namespace 'm2'.
                 return new m2.public2();
             }
     

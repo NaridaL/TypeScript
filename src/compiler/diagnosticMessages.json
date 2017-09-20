@@ -2269,7 +2269,7 @@
         "category": "Error",
         "code": 4023
     },
-    "Exported variable '{0}' has or is using name '{1}' from private module '{2}'.": {
+    "Exported variable '{0}' has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4024
     },
@@ -2281,7 +2281,7 @@
         "category": "Error",
         "code": 4026
     },
-    "Public static property '{0}' of exported class has or is using name '{1}' from private module '{2}'.": {
+    "Public static property '{0}' of exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4027
     },
@@ -2293,7 +2293,7 @@
         "category": "Error",
         "code": 4029
     },
-    "Public property '{0}' of exported class has or is using name '{1}' from private module '{2}'.": {
+    "Public property '{0}' of exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4030
     },
@@ -2301,7 +2301,7 @@
         "category": "Error",
         "code": 4031
     },
-    "Property '{0}' of exported interface has or is using name '{1}' from private module '{2}'.": {
+    "Property '{0}' of exported interface has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4032
     },
@@ -2309,7 +2309,7 @@
         "category": "Error",
         "code": 4033
     },
-    "Parameter type of public static setter '{0}' from exported class has or is using name '{1}' from private module '{2}'.": {
+    "Parameter type of public static setter '{0}' from exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4034
     },
@@ -2317,7 +2317,7 @@
         "category": "Error",
         "code": 4035
     },
-    "Parameter type of public setter '{0}' from exported class has or is using name '{1}' from private module '{2}'.": {
+    "Parameter type of public setter '{0}' from exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4036
     },
@@ -2329,7 +2329,7 @@
         "category": "Error",
         "code": 4038
     },
-    "Return type of public static getter '{0}' from exported class has or is using name '{1}' from private module '{2}'.": {
+    "Return type of public static getter '{0}' from exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4039
     },
@@ -2341,7 +2341,7 @@
         "category": "Error",
         "code": 4041
     },
-    "Return type of public getter '{0}' from exported class has or is using name '{1}' from private module '{2}'.": {
+    "Return type of public getter '{0}' from exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4042
     },
@@ -2349,7 +2349,7 @@
         "category": "Error",
         "code": 4043
     },
-    "Return type of constructor signature from exported interface has or is using name '{0}' from private module '{1}'.": {
+    "Return type of constructor signature from exported interface has or is using name '{0}' from private namespace '{1}'.": {
         "category": "Error",
         "code": 4044
     },
@@ -2357,7 +2357,7 @@
         "category": "Error",
         "code": 4045
     },
-    "Return type of call signature from exported interface has or is using name '{0}' from private module '{1}'.": {
+    "Return type of call signature from exported interface has or is using name '{0}' from private namespace '{1}'.": {
         "category": "Error",
         "code": 4046
     },
@@ -2365,7 +2365,7 @@
         "category": "Error",
         "code": 4047
     },
-    "Return type of index signature from exported interface has or is using name '{0}' from private module '{1}'.": {
+    "Return type of index signature from exported interface has or is using name '{0}' from private namespace '{1}'.": {
         "category": "Error",
         "code": 4048
     },
@@ -2377,7 +2377,7 @@
         "category": "Error",
         "code": 4050
     },
-    "Return type of public static method from exported class has or is using name '{0}' from private module '{1}'.": {
+    "Return type of public static method from exported class has or is using name '{0}' from private namespace '{1}'.": {
         "category": "Error",
         "code": 4051
     },
@@ -2389,7 +2389,7 @@
         "category": "Error",
         "code": 4053
     },
-    "Return type of public method from exported class has or is using name '{0}' from private module '{1}'.": {
+    "Return type of public method from exported class has or is using name '{0}' from private namespace '{1}'.": {
         "category": "Error",
         "code": 4054
     },
@@ -2397,7 +2397,7 @@
         "category": "Error",
         "code": 4055
     },
-    "Return type of method from exported interface has or is using name '{0}' from private module '{1}'.": {
+    "Return type of method from exported interface has or is using name '{0}' from private namespace '{1}'.": {
         "category": "Error",
         "code": 4056
     },
@@ -2409,7 +2409,7 @@
         "category": "Error",
         "code": 4058
     },
-    "Return type of exported function has or is using name '{0}' from private module '{1}'.": {
+    "Return type of exported function has or is using name '{0}' from private namespace '{1}'.": {
         "category": "Error",
         "code": 4059
     },
@@ -2421,7 +2421,7 @@
         "category": "Error",
         "code": 4061
     },
-    "Parameter '{0}' of constructor from exported class has or is using name '{1}' from private module '{2}'.": {
+    "Parameter '{0}' of constructor from exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4062
     },
@@ -2429,7 +2429,7 @@
         "category": "Error",
         "code": 4063
     },
-    "Parameter '{0}' of constructor signature from exported interface has or is using name '{1}' from private module '{2}'.": {
+    "Parameter '{0}' of constructor signature from exported interface has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4064
     },
@@ -2437,7 +2437,7 @@
         "category": "Error",
         "code": 4065
     },
-    "Parameter '{0}' of call signature from exported interface has or is using name '{1}' from private module '{2}'.": {
+    "Parameter '{0}' of call signature from exported interface has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4066
     },
@@ -2449,7 +2449,7 @@
         "category": "Error",
         "code": 4068
     },
-    "Parameter '{0}' of public static method from exported class has or is using name '{1}' from private module '{2}'.": {
+    "Parameter '{0}' of public static method from exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4069
     },
@@ -2461,7 +2461,7 @@
         "category": "Error",
         "code": 4071
     },
-    "Parameter '{0}' of public method from exported class has or is using name '{1}' from private module '{2}'.": {
+    "Parameter '{0}' of public method from exported class has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4072
     },
@@ -2469,7 +2469,7 @@
         "category": "Error",
         "code": 4073
     },
-    "Parameter '{0}' of method from exported interface has or is using name '{1}' from private module '{2}'.": {
+    "Parameter '{0}' of method from exported interface has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4074
     },
@@ -2481,7 +2481,7 @@
         "category": "Error",
         "code": 4076
     },
-    "Parameter '{0}' of exported function has or is using name '{1}' from private module '{2}'.": {
+    "Parameter '{0}' of exported function has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4077
     },
@@ -2505,7 +2505,7 @@
         "category": "Message",
         "code": 4090
     },
-    "Parameter '{0}' of index signature from exported interface has or is using name '{1}' from private module '{2}'.": {
+    "Parameter '{0}' of index signature from exported interface has or is using name '{1}' from private namespace '{2}'.": {
         "category": "Error",
         "code": 4091
     },
