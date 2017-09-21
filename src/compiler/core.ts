@@ -22,7 +22,7 @@ namespace ts {
 namespace ts {
 
     // More efficient to create a collator once and use its `compare` than to call `a.localeCompare(b)` many times.
-    export const collator: { compare(a: string, b: string): number } = typeof Intl === "object" && typeof Intl.Collator === "function" ? new Intl.Collator(/*locales*/ undefined, { usage: "sort", sensitivity: "accent" }) : undefined;
+    export const collator: { compare(a: string, b: string): number } | undefined = typeof Intl === "object" && typeof Intl.Collator === "function" ? new Intl.Collator(/*locales*/ undefined, { usage: "sort", sensitivity: "accent" }) : undefined;
     // Intl is missing in Safari, and node 0.10 treats "a" as greater than "B".
     export const localeCompareIsCorrect = ts.collator && ts.collator.compare("a", "B") < 0;
 
@@ -64,9 +64,9 @@ namespace ts {
 
         // Copies keys/values from template. Note that for..in will not throw if
         // template is undefined, and instead will just exit the loop.
-        for (const key in template) {
+        for (const key in template!) {
             if (hasOwnProperty.call(template, key)) {
-                map.set(key, template[key]);
+                map.set(key, template![key]);
             }
         }
 
@@ -155,7 +155,7 @@ namespace ts {
                     action(this.data[key], key);
                 }
             }
-        };
+        } as any;
     }
 
     export function toPath(fileName: string, basePath: string, getCanonicalFileName: (path: string) => string): Path {
@@ -199,7 +199,7 @@ namespace ts {
      */
     export function findAncestor<T extends Node>(node: Node, callback: (element: Node) => element is T): T | undefined;
     export function findAncestor(node: Node, callback: (element: Node) => boolean | "quit"): Node | undefined;
-    export function findAncestor(node: Node, callback: (element: Node) => boolean | "quit"): Node {
+    export function findAncestor(node: Node | undefined, callback: (element: Node) => boolean | "quit"): Node | undefined {
         while (node) {
             const result = callback(node);
             if (result === "quit") {
@@ -279,6 +279,7 @@ namespace ts {
             }
         }
         Debug.fail();
+        throw new Error();
     }
 
     export function contains<T>(array: ReadonlyArray<T>, value: T): boolean {
@@ -384,8 +385,10 @@ namespace ts {
         array.length = 0;
     }
 
-    export function map<T, U>(array: ReadonlyArray<T>, f: (x: T, i: number) => U): U[] {
-        let result: U[];
+    export function map(array: undefined, f: (x: any, i: number) => any): undefined;
+    export function map<T, U>(array: ReadonlyArray<T>, f: (x: T, i: number) => U): U[];
+    export function map<T, U>(array: ReadonlyArray<T> | undefined, f: (x: T, i: number) => U): U[] | undefined {
+        let result: U[] | undefined;
         if (array) {
             result = [];
             for (let i = 0; i < array.length; i++) {
@@ -399,7 +402,7 @@ namespace ts {
     export function sameMap<T>(array: T[], f: (x: T, i: number) => T): T[];
     export function sameMap<T>(array: ReadonlyArray<T>, f: (x: T, i: number) => T): ReadonlyArray<T>;
     export function sameMap<T>(array: T[], f: (x: T, i: number) => T): T[] {
-        let result: T[];
+        let result: T[] | undefined;
         if (array) {
             for (let i = 0; i < array.length; i++) {
                 if (result) {
@@ -423,8 +426,10 @@ namespace ts {
      *
      * @param array The array to flatten.
      */
-    export function flatten<T>(array: ReadonlyArray<T | ReadonlyArray<T>>): T[] {
-        let result: T[];
+    export function flatten<T>(array: undefined): undefined;
+    export function flatten<T>(array: ReadonlyArray<T | ReadonlyArray<T>>): T[];
+    export function flatten<T>(array: ReadonlyArray<T | ReadonlyArray<T>> | undefined): T[] | undefined {
+        let result: T[] | undefined;
         if (array) {
             result = [];
             for (const v of array) {
@@ -448,6 +453,8 @@ namespace ts {
      * @param array The array to map.
      * @param mapfn The callback used to map the result into one or more values.
      */
+    export function flatMap<T, U>(array: undefined, mapfn: (x: T, i: number) => U | ReadonlyArray<U> | undefined): undefined
+    export function flatMap<T, U>(array: ReadonlyArray<T>, mapfn: (x: T, i: number) => U | ReadonlyArray<U> | undefined): U[]
     export function flatMap<T, U>(array: ReadonlyArray<T> | undefined, mapfn: (x: T, i: number) => U | ReadonlyArray<U> | undefined): U[] | undefined {
         let result: U[];
         if (array) {
@@ -488,7 +495,7 @@ namespace ts {
     export function sameFlatMap<T>(array: T[], mapfn: (x: T, i: number) => T | ReadonlyArray<T>): T[];
     export function sameFlatMap<T>(array: ReadonlyArray<T>, mapfn: (x: T, i: number) => T | ReadonlyArray<T>): ReadonlyArray<T>;
     export function sameFlatMap<T>(array: T[], mapfn: (x: T, i: number) => T | T[]): T[] {
-        let result: T[];
+        let result: T[] | undefined;
         if (array) {
             for (let i = 0; i < array.length; i++) {
                 const item = array[i];
@@ -527,7 +534,9 @@ namespace ts {
      * Computes the first matching span of elements and returns a tuple of the first span
      * and the remaining elements.
      */
-    export function span<T>(array: ReadonlyArray<T>, f: (x: T, i: number) => boolean): [T[], T[]] {
+    export function span(array: undefined, f: (x: any, i: number) => boolean): undefined;
+    export function span<T>(array: ReadonlyArray<T>, f: (x: T, i: number) => boolean): [T[], T[]];
+    export function span<T>(array: ReadonlyArray<T> | undefined, f: (x: T, i: number) => boolean): [T[], T[]] | undefined {
         if (array) {
             for (let i = 0; i < array.length; i++) {
                 if (!f(array[i], i)) {
@@ -552,7 +561,7 @@ namespace ts {
         if (array) {
             result = [];
             const len = array.length;
-            let previousKey: K;
+            let previousKey: K | undefined;
             let key: K;
             let start = 0;
             let pos = 0;
@@ -1238,10 +1247,11 @@ namespace ts {
 
     export function memoize<T>(callback: () => T): () => T {
         let value: T;
+        let callbackRef: (() => T) | undefined = callback;
         return () => {
-            if (callback) {
-                value = callback();
-                callback = undefined;
+            if (callbackRef) {
+                value = callbackRef();
+                callbackRef = undefined;
             }
             return value;
         };
@@ -1689,7 +1699,7 @@ namespace ts {
         return getNormalizedPathFromPathComponents(getNormalizedPathComponents(fileName, currentDirectory));
     }
 
-    export function getNormalizedPathFromPathComponents(pathComponents: ReadonlyArray<string>) {
+    export function getNormalizedPathFromPathComponents(pathComponents: ReadonlyArray<string> | undefined) {
         if (pathComponents && pathComponents.length) {
             return pathComponents[0] + pathComponents.slice(1).join(directorySeparator);
         }
@@ -2073,11 +2083,11 @@ namespace ts {
 
     export interface FileMatcherPatterns {
         /** One pattern for each "include" spec. */
-        includeFilePatterns: ReadonlyArray<string>;
+        includeFilePatterns?: ReadonlyArray<string>;
         /** One pattern matching one of any of the "include" specs. */
-        includeFilePattern: string;
-        includeDirectoryPattern: string;
-        excludePattern: string;
+        includeFilePattern?: string;
+        includeDirectoryPattern?: string;
+        excludePattern?: string;
         basePaths: ReadonlyArray<string>;
     }
 
@@ -2095,6 +2105,17 @@ namespace ts {
         };
     }
 
+    /**
+     * Does a glob-expansion. Returns an array of file paths.
+     * @param path
+     * @param extensions file extensions which should be part of the result.
+     * @param excludes glob-patterns for files which should NEVER appear in the output.
+     * @param includes
+     * @param useCaseSensitiveFileNames
+     * @param currentDirectory
+     * @param depth
+     * @param getFileSystemEntries
+     */
     export function matchFiles(path: string, extensions: ReadonlyArray<string>, excludes: ReadonlyArray<string>, includes: ReadonlyArray<string>, useCaseSensitiveFileNames: boolean, currentDirectory: string, depth: number | undefined, getFileSystemEntries: (path: string) => FileSystemEntries): string[] {
         path = normalizePath(path);
         currentDirectory = normalizePath(currentDirectory);

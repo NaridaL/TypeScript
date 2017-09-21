@@ -1,0 +1,68 @@
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(3,5): error TS2304: Cannot find name 'registerCodeFix'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(4,22): error TS2304: Cannot find name 'Diagnostics'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(5,35): error TS2304: Cannot find name 'CodeFixContext'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(7,27): error TS2304: Cannot find name 'getTokenAtPosition'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(9,32): error TS2304: Cannot find name 'SyntaxKind'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(13,35): error TS2304: Cannot find name 'textChanges'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(14,31): error TS2304: Cannot find name 'createStatement'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(14,47): error TS2304: Cannot find name 'createCall'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(14,58): error TS2304: Cannot find name 'createSuper'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(14,121): error TS2304: Cannot find name 'emptyArray'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(15,55): error TS2304: Cannot find name 'getOpenBrace'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(15,69): error TS2304: Cannot find name 'ConstructorDeclaration'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(18,30): error TS2304: Cannot find name 'getLocaleSpecificMessage'.
+tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts(18,55): error TS2304: Cannot find name 'Diagnostics'.
+
+
+==== tests/cases/compiler/fixConstructorForDerivedNeedSuperCall.ts (14 errors) ====
+    /* @internal */
+    namespace ts.codefix {
+        registerCodeFix({
+        ~~~~~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'registerCodeFix'.
+            errorCodes: [Diagnostics.Constructors_for_derived_classes_must_contain_a_super_call.code],
+                         ~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'Diagnostics'.
+            getCodeActions: (context: CodeFixContext) => {
+                                      ~~~~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'CodeFixContext'.
+                const sourceFile = context.sourceFile;
+                const token = getTokenAtPosition(sourceFile, context.span.start, /*includeJsDocComment*/ false);
+                              ~~~~~~~~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'getTokenAtPosition'.
+    
+                if (token.kind !== SyntaxKind.ConstructorKeyword) {
+                                   ~~~~~~~~~~
+!!! error TS2304: Cannot find name 'SyntaxKind'.
+                    return undefined;
+                }
+    
+                const changeTracker = textChanges.ChangeTracker.fromContext(context);
+                                      ~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'textChanges'.
+                const superCall = createStatement(createCall(createSuper(), /*typeArguments*/ undefined, /*argumentsArray*/ emptyArray));
+                                  ~~~~~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'createStatement'.
+                                                  ~~~~~~~~~~
+!!! error TS2304: Cannot find name 'createCall'.
+                                                             ~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'createSuper'.
+                                                                                                                            ~~~~~~~~~~
+!!! error TS2304: Cannot find name 'emptyArray'.
+                changeTracker.insertNodeAfter(sourceFile, getOpenBrace(<ConstructorDeclaration>token.parent, sourceFile), superCall, { suffix: context.newLineCharacter });
+                                                          ~~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'getOpenBrace'.
+                                                                        ~~~~~~~~~~~~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'ConstructorDeclaration'.
+    
+                return [{
+                    description: getLocaleSpecificMessage(Diagnostics.Add_missing_super_call),
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'getLocaleSpecificMessage'.
+                                                          ~~~~~~~~~~~
+!!! error TS2304: Cannot find name 'Diagnostics'.
+                    changes: changeTracker.getChanges()
+                }];
+            }
+        });
+    }
