@@ -1069,15 +1069,18 @@ namespace ts {
                     if (pos < end && text.charCodeAt(pos) === CharacterCodes.openBrace) {
                         hasExtendedUnicodeEscape = true;
                         pos++;
-                        return scanExtendedUnicodeEscape();
+                        const value = scanExtendedUnicodeEscape();
+                        return value < 0 ? "" : utf16EncodeAsString(value);
                     }
 
                     // '\uDDDD'
-                    return scanHexadecimalEscape(/*numDigits*/ 4);
+                    const escapeValue4 = scanHexadecimalEscape(/*numDigits*/ 4);
+                    return escapeValue4 < 0 ? "" : String.fromCharCode(escapeValue4);
 
                 case CharacterCodes.x:
                     // '\xDD'
-                    return scanHexadecimalEscape(/*numDigits*/ 2);
+                    const escapeValue2 = scanHexadecimalEscape(/*numDigits*/ 2);
+                    return escapeValue2 < 0 ? "" : String.fromCharCode(escapeValue2);
 
                 // when encountering a LineContinuation (i.e. a backslash and a line terminator sequence),
                 // the line terminator is interpreted to be "the empty code unit sequence".
@@ -1095,19 +1098,20 @@ namespace ts {
             }
         }
 
-        function scanHexadecimalEscape(numDigits: number): string {
+        function scanHexadecimalEscape(numDigits: number): number {
             const escapedValue = scanExactNumberOfHexDigits(numDigits);
 
-            if (escapedValue >= 0) {
-                return String.fromCharCode(escapedValue);
-            }
-            else {
+            if (escapedValue < 0) {
                 error(Diagnostics.Hexadecimal_digit_expected);
-                return "";
+                return -1;
             }
+            return escapedValue;
         }
 
-        function scanExtendedUnicodeEscape(): string {
+        /**
+         * Scan HexDigits '}'
+         */
+        function scanExtendedUnicodeEscape(): number {
             const escapedValue = scanMinimumNumberOfHexDigits(1);
             let isInvalidExtendedEscape = false;
 
@@ -1135,10 +1139,10 @@ namespace ts {
             }
 
             if (isInvalidExtendedEscape) {
-                return "";
+                return -1;
             }
 
-            return utf16EncodeAsString(escapedValue);
+            return escapedValue;
         }
 
         // Derived from the 10.1.1 UTF16Encoding of the ES6 Spec.
@@ -1157,13 +1161,31 @@ namespace ts {
 
         // Current character is known to be a backslash. Check for Unicode escape of the form '\uXXXX'
         // and return code point value if valid Unicode escape is found. Otherwise return -1.
-        function peekUnicodeEscape(): number {
+        // function peekUnicodeEscape(): number {
+        //     if (pos + 5 < end && text.charCodeAt(pos + 1) === CharacterCodes.u) {
+        //         const start = pos;
+        //         pos += 2;
+        //         const value = scanExactNumberOfHexDigits(4);
+        //         pos = start;
+        //         return value;
+        //     }
+        //     return -1;
+        // }
+
+        // Current character is known to be a backslash. Check for Unicode escape of the form '\uXXXX'
+        // or of the form '\u{HexDigits}'. If found, return code point value and advance pos, otherwise
+        // return -1.
+        function scanUnicodeEscape(): number {
+            // \u{X} is the shortest possible sequence, hence pos + 4 < end
             if (pos + 5 < end && text.charCodeAt(pos + 1) === CharacterCodes.u) {
-                const start = pos;
-                pos += 2;
-                const value = scanExactNumberOfHexDigits(4);
-                pos = start;
-                return value;
+                if (text.charCodeAt(pos + 2) === CharacterCodes.openBrace) {
+                    pos += 3;
+                    return scanExtendedUnicodeEscape();
+                }
+                else if (pos + 6 < end) {
+                    pos += 2;
+                    return scanHexadecimalEscape(4);
+                }
             }
             return -1;
         }
@@ -1172,19 +1194,19 @@ namespace ts {
             let result = "";
             let start = pos;
             while (pos < end) {
-                let ch = text.charCodeAt(pos);
+                const ch = text.charCodeAt(pos);
                 if (isIdentifierPart(ch, languageVersion)) {
                     pos++;
                 }
                 else if (ch === CharacterCodes.backslash) {
-                    ch = peekUnicodeEscape();
-                    if (!(ch >= 0 && isIdentifierPart(ch, languageVersion))) {
+                    const beforeEscape = pos;
+                    const codePoint = scanUnicodeEscape();
+                    if (!(codePoint >= 0 && isIdentifierPart(codePoint, languageVersion))) {
+                        pos = beforeEscape;
                         break;
                     }
-                    result += text.substring(start, pos);
-                    result += String.fromCharCode(ch);
-                    // Valid Unicode escape is always six characters
-                    pos += 6;
+                    result += text.substring(start, beforeEscape);
+                    result += utf16EncodeAsString(codePoint);
                     start = pos;
                 }
                 else {
@@ -1599,14 +1621,14 @@ namespace ts {
                         pos++;
                         return token = SyntaxKind.AtToken;
                     case CharacterCodes.backslash:
-                        const cookedChar = peekUnicodeEscape();
-                        if (cookedChar >= 0 && isIdentifierStart(cookedChar, languageVersion)) {
-                            pos += 6;
-                            tokenValue = String.fromCharCode(cookedChar) + scanIdentifierParts();
+                        const beforeEscape = pos;
+                        const codePoint = scanUnicodeEscape();
+                        if (codePoint >= 0 && isIdentifierStart(codePoint, languageVersion)) {
+                            tokenValue = utf16EncodeAsString(codePoint) + scanIdentifierParts();
                             return token = getIdentifierToken();
                         }
                         error(Diagnostics.Invalid_character);
-                        pos++;
+                        pos = beforeEscape + 1;
                         return token = SyntaxKind.Unknown;
                     default:
                         if (isIdentifierStart(ch, languageVersion)) {

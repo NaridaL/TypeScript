@@ -1,0 +1,42 @@
+=== tests/cases/compiler/identifierBracesUnicodeEscapeSequence.ts ===
+const n = 1;
+>n : Symbol(n, Decl(identifierBracesUnicodeEscapeSequence.ts, 0, 5))
+
+const \u{6E}\u{303} = "\u{6E}\u{303}"; // Latin lowercase "n" followed by the combining tilde "◌̃") is defined by Unicode to be canonically equivalent to the single code point U+00F1
+>\u{6E}\u{303} : Symbol(\u{6E}\u{303}, Decl(identifierBracesUnicodeEscapeSequence.ts, 2, 5))
+
+const \u{f1} = "\u{f1}"; // unicode string canonically equivalent to the above, but a distinct identifier.
+>\u{f1} : Symbol(\u{f1}, Decl(identifierBracesUnicodeEscapeSequence.ts, 4, 5))
+
+const \u{0000006d} = "l"; // lowercase d and unnecessary padding 0s
+>\u{0000006d} : Symbol(\u{0000006d}, Decl(identifierBracesUnicodeEscapeSequence.ts, 6, 5))
+
+// usage as object
+\u{f1}.toUpperCase();
+>\u{f1}.toUpperCase : Symbol(String.toUpperCase, Decl(lib.d.ts, --, --))
+>\u{f1} : Symbol(\u{f1}, Decl(identifierBracesUnicodeEscapeSequence.ts, 4, 5))
+>toUpperCase : Symbol(String.toUpperCase, Decl(lib.d.ts, --, --))
+
+// usage as passed value
+declare function foo(s: string): void;
+>foo : Symbol(foo, Decl(identifierBracesUnicodeEscapeSequence.ts, 9, 21))
+>s : Symbol(s, Decl(identifierBracesUnicodeEscapeSequence.ts, 12, 21))
+
+foo(\u{6E}\u{303});
+>foo : Symbol(foo, Decl(identifierBracesUnicodeEscapeSequence.ts, 9, 21))
+>\u{6E}\u{303} : Symbol(\u{6E}\u{303}, Decl(identifierBracesUnicodeEscapeSequence.ts, 2, 5))
+
+// mixed with normal characters:
+const \u{6E}o = "Dr.";
+>\u{6E}o : Symbol(\u{6E}o, Decl(identifierBracesUnicodeEscapeSequence.ts, 16, 5))
+
+const o\u{6E} = "off";
+>o\u{6E} : Symbol(o\u{6E}, Decl(identifierBracesUnicodeEscapeSequence.ts, 17, 5))
+
+// mixed with \uHHHHH escape sequence
+const \u{6E}\u0041 = "nana";
+>\u{6E}\u0041 : Symbol(\u{6E}\u0041, Decl(identifierBracesUnicodeEscapeSequence.ts, 20, 5))
+
+const \u0041\u{6E} = "off";
+>\u0041\u{6E} : Symbol(\u0041\u{6E}, Decl(identifierBracesUnicodeEscapeSequence.ts, 21, 5))
+

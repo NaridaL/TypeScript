@@ -1,0 +1,52 @@
+=== tests/cases/compiler/identifierBracesUnicodeEscapeSequence.ts ===
+const n = 1;
+>n : 1
+>1 : 1
+
+const \u{6E}\u{303} = "\u{6E}\u{303}"; // Latin lowercase "n" followed by the combining tilde "◌̃") is defined by Unicode to be canonically equivalent to the single code point U+00F1
+>\u{6E}\u{303} : "ñ"
+>"\u{6E}\u{303}" : "ñ"
+
+const \u{f1} = "\u{f1}"; // unicode string canonically equivalent to the above, but a distinct identifier.
+>\u{f1} : "ñ"
+>"\u{f1}" : "ñ"
+
+const \u{0000006d} = "l"; // lowercase d and unnecessary padding 0s
+>\u{0000006d} : "l"
+>"l" : "l"
+
+// usage as object
+\u{f1}.toUpperCase();
+>\u{f1}.toUpperCase() : string
+>\u{f1}.toUpperCase : () => string
+>\u{f1} : "ñ"
+>toUpperCase : () => string
+
+// usage as passed value
+declare function foo(s: string): void;
+>foo : (s: string) => void
+>s : string
+
+foo(\u{6E}\u{303});
+>foo(\u{6E}\u{303}) : void
+>foo : (s: string) => void
+>\u{6E}\u{303} : "ñ"
+
+// mixed with normal characters:
+const \u{6E}o = "Dr.";
+>\u{6E}o : "Dr."
+>"Dr." : "Dr."
+
+const o\u{6E} = "off";
+>o\u{6E} : "off"
+>"off" : "off"
+
+// mixed with \uHHHHH escape sequence
+const \u{6E}\u0041 = "nana";
+>\u{6E}\u0041 : "nana"
+>"nana" : "nana"
+
+const \u0041\u{6E} = "off";
+>\u0041\u{6E} : "off"
+>"off" : "off"
+
